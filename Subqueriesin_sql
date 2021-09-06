@@ -1,0 +1,192 @@
+mysql> create database supermarket;
+Query OK, 1 row affected (0.14 sec)
+
+mysql> create table customers(customerid int PRIMARY KEY AUTO_INCREMENT,customername varch
+ar(30),contactname varchar(30),country varchar(30));
+ERROR 1046 (3D000): No database selected
+mysql> use supermarket;
+Database changed
+mysql> create table customers(customerid int PRIMARY KEY AUTO_INCREMENT,customername varch
+ar(30),contactname varchar(30),country varchar(30));
+Query OK, 0 rows affected (0.53 sec)
+
+mysql> insert into customers(customername,contactname,country) values('swathielango','swat
+hi','porur');
+Query OK, 1 row affected (0.25 sec)
+
+mysql> insert into customers(customername,contactname,country) values('madhumala','madhu',
+'anna nagar');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into customers(customername,contactname,country) values('bargaviponram','bar
+gavi','kk nagar');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into customers(customername,contactname,country) values('kavyakarthi','kavya
+','porur');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into customers(customername,contactname,country) values('swaminathan','swami
+','anna nagar');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into customers(customername,contactname,country) values('suruthielango','sur
+uthi','kk nagar');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from customers;
++------------+---------------+-------------+------------+
+| customerid | customername  | contactname | country    |
++------------+---------------+-------------+------------+
+|          1 | swathielango  | swathi      | porur      |
+|          2 | madhumala     | madhu       | anna nagar |
+|          3 | bargaviponram | bargavi     | kk nagar   |
+|          4 | kavyakarthi   | kavya       | porur      |
+|          5 | swaminathan   | swami       | anna nagar |
+|          6 | suruthielango | suruthi     | kk nagar   |
++------------+---------------+-------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> create table market(marketid int,mname varchar(30),country varchar(30),customerid i
+nt);
+Query OK, 0 rows affected (1.70 sec)
+
+mysql> insert into market(marketid,mname,country,customerid) values (101,'Subha market','a
+nna nagar',2);
+Query OK, 1 row affected (0.50 sec)
+
+mysql> insert into market(marketid,mname,country,customerid) values (102,'Reliance market'
+,'porur',4);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into market(marketid,mname,country,customerid) values (103,'JioFresh market'
+,'anna nagar',5);
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into market(marketid,mname,country,customerid) values (104,'Nilgiris market'
+,'kk nagar',6);
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into market(marketid,mname,country,customerid) values (107,'Nilgiris market'
+,'kk nagar',3);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> Select * from market;
++----------+-----------------+------------+------------+
+| marketid | mname           | country    | customerid |
++----------+-----------------+------------+------------+
+|      101 | Subha market    | anna nagar |          2 |
+|      102 | Reliance market | porur      |          4 |
+|      103 | JioFresh market | anna nagar |          5 |
+|      104 | Nilgiris market | kk nagar   |          6 |
+|      107 | Nilgiris market | kk nagar   |          3 |
++----------+-----------------+------------+------------+
+5 rows in set (0.03 sec)
+
+mysql> select * from customers;
++------------+---------------+-------------+------------+
+| customerid | customername  | contactname | country    |
++------------+---------------+-------------+------------+
+|          1 | swathielango  | swathi      | porur      |
+|          2 | madhumala     | madhu       | anna nagar |
+|          3 | bargaviponram | bargavi     | kk nagar   |
+|          4 | kavyakarthi   | kavya       | porur      |
+|          5 | swaminathan   | swami       | anna nagar |
+|          6 | suruthielango | suruthi     | kk nagar   |
++------------+---------------+-------------+------------+
+6 rows in set (0.03 sec)
+
+mysql> select m.marketid, m.mname,c.customername
+    -> FROM market
+    ->
+    -> ;
+ERROR 1054 (42S22): Unknown column 'm.marketid' in 'field list'
+mysql> select m.marketid, m.mname,c.customername FROM market m inner join customers c on m
+.country=c.country;
++----------+-----------------+---------------+
+| marketid | mname           | customername  |
++----------+-----------------+---------------+
+|      102 | Reliance market | swathielango  |
+|      103 | JioFresh market | madhumala     |
+|      101 | Subha market    | madhumala     |
+|      107 | Nilgiris market | bargaviponram |
+|      104 | Nilgiris market | bargaviponram |
+|      102 | Reliance market | kavyakarthi   |
+|      103 | JioFresh market | swaminathan   |
+|      101 | Subha market    | swaminathan   |
+|      107 | Nilgiris market | suruthielango |
+|      104 | Nilgiris market | suruthielango |
++----------+-----------------+---------------+
+10 rows in set (0.05 sec)
+
+# Scalar operand Subquery
+
+mysql> select * from market where customerid = (select customerid from market where market
+id=104);
++----------+-----------------+----------+------------+
+| marketid | mname           | country  | customerid |
++----------+-----------------+----------+------------+
+|      104 | Nilgiris market | kk nagar |          6 |
++----------+-----------------+----------+------------+
+1 row in set (0.00 sec)
+
+#Comparison query
+
+mysql> select * from customers where customerid< (select avg(customerid) from customers);
++------------+---------------+-------------+------------+
+| customerid | customername  | contactname | country    |
++------------+---------------+-------------+------------+
+|          1 | swathielango  | swathi      | porur      |
+|          2 | madhumala     | madhu       | anna nagar |
+|          3 | bargaviponram | bargavi     | kk nagar   |
++------------+---------------+-------------+------------+
+3 rows in set (0.09 sec)
+
+#Clause Subquery
+mysql> select m.mname,m.marketid,m.customerid FROM market m WHERE m.customerid=ANY(select
+c.customerid FROM customers c WHERE c.contactname='suruthi');
++-----------------+----------+------------+
+| mname           | marketid | customerid |
++-----------------+----------+------------+
+| Nilgiris market |      104 |          6 |
++-----------------+----------+------------+
+1 row in set (0.07 sec)
+
+//Comparison subquery using insert
+
+mysql> INSERT INTO market(marketid,mname,country) values(109,'pazhamudir market',(SELECT c
+ountry FROM customers where customerid=3));
+Query OK, 1 row affected (0.14 sec)
+
+mysql> select * from market;
++----------+-------------------+------------+------------+
+| marketid | mname             | country    | customerid |
++----------+-------------------+------------+------------+
+|      101 | Subha market      | anna nagar |          2 |
+|      102 | Reliance market   | porur      |          4 |
+|      103 | JioFresh market   | anna nagar |          5 |
+|      104 | Nilgiris market   | kk nagar   |          6 |
+|      107 | Nilgiris market   | kk nagar   |          3 |
+|      109 | pazhamudir market | kk nagar   |       NULL |
++----------+-------------------+------------+------------+
+6 rows in set (0.00 sec)
+
+Single row subquery using UPDATE command
+
+mysql> UPDATE market SET country='ramapuram' where customerid=(SELECT customerid from cust
+omers where contactname='swami');
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> Select * from market;
++----------+-------------------+------------+------------+
+| marketid | mname             | country    | customerid |
++----------+-------------------+------------+------------+
+|      101 | Subha market      | anna nagar |          2 |
+|      102 | Reliance market   | porur      |          4 |
+|      103 | JioFresh market   | ramapuram  |          5 |
+|      104 | Nilgiris market   | kk nagar   |          6 |
+|      107 | Nilgiris market   | kk nagar   |          3 |
+|      109 | pazhamudir market | kk nagar   |       NULL |
++----------+-------------------+------------+------------+
+6 rows in set (0.04 sec)
