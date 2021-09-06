@@ -1,0 +1,203 @@
+mysql> create database OnlineFoodOrderingDB;
+mysql> use OnlineFoodOrderingDB;
+Database changed
+
+mysql> CREATE TABLE restaurants(
+    ->    restaurant_id int NOT NULL,
+    ->    restaurant_name varchar(25) NOT NULL,
+    ->    restuarant_address varchar(50),
+    ->    restaurant_city varchar(50),
+    ->    contact_number int,
+    ->    PRIMARY KEY(restaurant_id)
+    -> );
+Query OK, 0 rows affected (1.38 sec)
+
+mysql> CREATE TABLE Rmenuitems(
+    ->    menuID int AUTO_INCREMENT,
+    ->    restaurant_id int,
+    ->    menu_name varchar(20),
+    ->    menu_type varchar(20),
+    ->    menu_category varchar(25),
+    ->    menu_price int NOT NULL,
+    ->    menu_desc varchar(25),
+    ->    PRIMARY KEY (menuID),
+    ->    FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
+    -> );
+Query OK, 0 rows affected (2.30 sec)
+
+mysql> CREATE TABLE customers(
+    ->     Customer_Id varchar(50),
+    ->     Customer_Name varchar(50),
+    ->     Customer_City varchar(25),
+    ->     Customer_Dob DATE,
+    ->     Customer_Gender varchar(50),
+    ->     Customer_Pswd varchar(50),
+    ->     PRIMARY KEY(Customer_Id)
+    -> );
+Query OK, 0 rows affected (1.96 sec)
+
+mysql> CREATE TABLE Orders(
+    ->     Order_Id int AUTO_INCREMENT,
+    ->     Customer_Id varchar(50),
+    ->     Order_Date DATE,
+    ->     Delivery_Address VARCHAR(100),
+    ->     Order_Status varchar(25),
+    ->     PRIMARY KEY (Order_Id),
+    ->     FOREIGN KEY (Customer_Id) REFERENCES customers(Customer_Id)
+    -> );
+Query OK, 0 rows affected (1.91 sec)
+
+mysql> CREATE TABLE Order_Menu(
+    ->     Order_Id int AUTO_INCREMENT,
+    ->     menuID int,
+    ->     Menu_Qty int,
+    ->     Menu_Price int,
+    ->     FOREIGN KEY (menuID) REFERENCES Rmenuitems(menuID),
+    ->     FOREIGN KEY (Order_Id) REFERENCES Orders(Order_Id)
+    -> );
+Query OK, 0 rows affected (2.00 sec)
+
+insert into restaurants(restaurant_id,restaurant_name,
+restuarant_address,restaurant_city,contact_number) 
+values (1,'HotelSaravanan','MeenakshiNagar','Chennai',99009900);
+Query OK, 1 row affected (0.17 sec)
+insert into restaurants(restaurant_id,restaurant_name,
+restuarant_address,restaurant_city,contact_number) 
+values (2,'TATA_UDIPI','ANNANagar','Tiruchy',99009911);
+Query OK, 1 row affected (0.17 sec)
+insert into restaurants(restaurant_id,restaurant_name,
+restuarant_address,restaurant_city,contact_number) 
+values (3,'MaduraiHotel','MeenakshiNagar','Chennai',99109900);
+Query OK, 1 row affected (0.17 sec)
+insert into restaurants(restaurant_id,restaurant_name,
+restuarant_address,restaurant_city,contact_number) 
+values (4,'HotelSakthi','ANNANagar','Tiruchy',99129900);
+Query OK, 1 row affected (0.16 sec)
+insert into restaurants(restaurant_id,restaurant_name,
+restuarant_address,restaurant_city,contact_number) 
+values (5,'HotelKaviya','MeenakshiNagar','Chennai',99139913);
+Query OK, 1 row affected (0.17 sec)
+insert into restaurants(restaurant_id,restaurant_name,
+restuarant_address,restaurant_city,contact_number) 
+values (6,'HotelLatha','Ranipet','Chennai',99049940);
+Query OK, 1 row affected (0.12 sec)
+insert into restaurants(restaurant_id,restaurant_name,
+restuarant_address,restaurant_city,contact_number) 
+values (7,'SwifterHotel','Chengalpet','Madurai',99909912);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select restaurant_city from restaurants;
++-----------------+
+| restaurant_city |
++-----------------+
+| Chennai         |
+| Tiruchy         |
+| Chennai         |
+| Tiruchy         |
+| Chennai         |
+| Madurai         |
++-----------------+
+6 rows in set (0.09 sec)
+
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (101,1,'LunchMenu','Veg','Category1',1200);
+Query OK,1 row affected <0.26 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (102,1,'BreakfastMenu','Veg','Category10',2200);
+Query OK,1 row affected <0.31 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (103,1,'DinnerMenu','Veg','Category12',3200);
+Query OK,1 row affected <0.11 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (104,1,'LunchMenu','Veg','Category14',5050);
+Query OK,1 row affected <0.10 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (105,1,'BreakfastMenu','Veg','Category21',5000);
+Query OK,1 row affected <0.12 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (106,1,'LunchMenu','NonVeg','Category13',900);
+Query OK,1 row affected <0.11 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (107,1,'LunchMenu','NonVeg','Category91',1677);
+Query OK,1 row affected <0.10 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (108,1,'DinnerMenu','Veg','Category101',1332);
+Query OK,1 row affected <0.12 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (109,1,'LunchMenu','Veg','Category109',1600);
+Query OK,1 row affected <0.10 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (110,1,'LunchMenu','NonVeg','Category180',1215);
+Query OK,1 row affected <0.20 sec>
+insert into Rmenuitems(menuID,restaurant_id,menu_name,menu_type,menu_category,menu_price) values (121,1,'DinnerMenu','NonVeg','Category71',1305);
+Query OK,1 row affected <0.08 sec>
+
+mysql>
+mysql> SELECT restaurants.restaurant_id,restaurants.restaurant_name,
+    -> Rmenuitems.menuID,Rmenuitems.menu_name,Rmenuitems.menu_price
+    -> FROM restaurants
+    -> INNER JOIN Rmenuitems ON restaurants.restaurant_id=Rmenuitems.restaurant_
+id;
++---------------+-----------------+--------+---------------+------------+
+| restaurant_id | restaurant_name | menuID | menu_name     | menu_price |
++---------------+-----------------+--------+---------------+------------+
+|             1 | HotelSaravanan  |    101 | LunchMenu     |       1200 |
+|             1 | HotelSaravanan  |    102 | BreakfastMenu |       2200 |
+|             1 | HotelSaravanan  |    103 | DinnerMenu    |       3200 |
+|             1 | HotelKaviya     |    104 | LunchMenu     |       5050 |
+|             1 | HotelSaravanan  |    105 | BreakfastMenu |       5000 |
+|             1 | HotelSaravanan  |    106 | LunchMenu     |        900 |
+|             1 | HotelSaravanan  |    107 | LunchMenu     |       1677 |
+|             1 | HotelSakthi     |    108 | DinnerMenu    |       1332 |
+|             1 | HotelSaravanan  |    109 | LunchMenu     |       1600 |
+|             1 | TATAUDIPI       |    110 | LunchMenu     |       1215 |
+|             1 | HotelSaravanan  |    121 | DinnerMenu    |       1305 |
++---------------+-----------------+--------+---------------+------------+
+11 rows in set (0.09 sec)
+
+insert into customers(Customer_Id,Customer_Name,Customer_City,Customer_Dob,Customer_Gender) values('Ch01','Bhakiya','Chennai','1998-11-11','F');
+Query OK,1 row affected <0.35 sec>
+insert into customers(Customer_Id,Customer_Name,Customer_City,Customer_Dob,Customer_Gender) values('Hyd01','Sakabhai','Hyderabad','1993-10-21','M');
+Query OK,1 row affected <0.13 sec>
+insert into customers(Customer_Id,Customer_Name,Customer_City,Customer_Dob,Customer_Gender) values('B01','KrishnaRav','Hyderabad','2000-05-01','M');
+Query OK,1 row affected <0.20 sec>
+insert into customers(Customer_Id,Customer_Name,Customer_City,Customer_Dob,Customer_Gender) values('M01','GeethaMoorthy','Kochi','2005-08-15','F');
+Query OK,1 row affected <0.21 sec>
+insert into customers(Customer_Id,Customer_Name,Customer_City,Customer_Dob,Customer_Gender) values('Ch03','Bondita','Chennai','1990-05-19','F');
+Query OK,1 row affected <0.10 sec>
+
+insert into Orders(Order_Id,Customer_Id,Order_Date,Delivery_Address,Order_Status) values('01','Ch01','2021-05-06','Chennai','Fulfilled');
+Query OK,1 row affected <0.13 sec>
+insert into Orders(Order_Id,Customer_Id,Order_Date,Delivery_Address,Order_Status) values('02','M01','2021-09-06','Kochi','UnderFulfillment');
+Query OK,1 row affected <0.24 sec>
+insert into Orders(Order_Id,Customer_Id,Order_Date,Delivery_Address,Order_Status) values('03','Ch01','2021-09-08','Chennai','UnderFulfillment');
+Query OK,1 row affected <0.14 sec>
+insert into Orders(Order_Id,Customer_Id,Order_Date,Delivery_Address,Order_Status) values('04','Hyd01','2021-04-18','Hyderabad','Fulfillment');
+Query OK, 1 row affected <0.17 sec> 
+insert into Orders(Order_Id,Customer_Id,Order_Date,Delivery_Address,Order_Status) values('05','B01','2021-01-08','Kolkata','Fulfillment');
+Query OK,1 row affected <0.19 sec>
+insert into Orders(Order_Id,Customer_Id,Order_Date,Delivery_Address,Order_Status) values('07','Ch01','2021-09-08','Chennai','UnderFulfillment');
+Query OK,1 row affected <0.17 sec>
+
+
+mysql> SELECT * FROM Orders where Customer_Id='Ch01';
++----------+-------------+------------+------------------+------------------+
+| Order_Id | Customer_Id | Order_Date | Delivery_Address | Order_Status     |
++----------+-------------+------------+------------------+------------------+
+|        1 | Ch01        | 2021-05-06 | Chennai          | Fulfilled        |
+|        3 | Ch01        | 2021-09-08 | Chennai          | UnderFulfillment |
+|        7 | Ch01        | 2021-09-08 | Chennai          | UnderFulfillment |
++----------+-------------+------------+------------------+------------------+
+3 rows in set (0.10 sec)
+
+
+mysql> SELECT restaurants.restaurant_id,restaurants.restaurant_name, Rmenuitems.
+menuID,Rmenuitems.menu_name,Rmenuitems.menu_price FROM restaurants INNER JOIN Rm
+enuitems ON restaurants.restaurant_id=Rmenuitems.restaurant_id where restaurant_
+city='Chennai';
++---------------+-----------------+--------+---------------+------------+
+| restaurant_id | restaurant_name | menuID | menu_name     | menu_price |
++---------------+-----------------+--------+---------------+------------+
+|             1 | HotelSaravanan  |    101 | LunchMenu     |       1200 |
+|             1 | HotelSaravanan  |    102 | BreakfastMenu |       2200 |
+|             1 | HotelSaravanan  |    103 | DinnerMenu    |       3200 |
+|             1 | HotelSaravanan  |    104 | LunchMenu     |       5050 |
+|             1 | HotelSaravanan  |    105 | BreakfastMenu |       5000 |
+|             1 | HotelSaravanan  |    106 | LunchMenu     |        900 |
+|             1 | HotelSaravanan  |    107 | LunchMenu     |       1677 |
+|             1 | HotelSaravanan  |    108 | DinnerMenu    |       1332 |
+|             1 | HotelSaravanan  |    109 | LunchMenu     |       1600 |
+|             1 | HotelSaravanan  |    110 | LunchMenu     |       1215 |
+|             1 | HotelSaravanan  |    121 | DinnerMenu    |       1305 |
++---------------+-----------------+--------+---------------+------------+
+11 rows in set (0.32 sec)
